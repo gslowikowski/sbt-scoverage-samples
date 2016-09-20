@@ -2,7 +2,7 @@ name := "sbt-scoverage-samples"
 
 organization := "org.scoverage"
 
-version := "1.3.5"
+version := "1.3.6-SNAPSHOT"
 
 scalaVersion := "2.11.8"
 
@@ -14,13 +14,19 @@ scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
 
 scalacOptions in (Compile, doc) ++= Seq("-unchecked", "-deprecation", "-diagrams", "-implicits", "-skip-packages", "samples")
 
+resolvers ++= {
+  if (isSnapshot.value)
+    Seq(Resolver.sonatypeRepo("snapshots"))
+  else
+    Seq.empty
+}
+
 libraryDependencies ++= Seq(
   "commons-io"                 %  "commons-io"             % "2.4",
   "com.typesafe.akka"          %% "akka-actor"             % "2.3.2",
   "com.typesafe.akka"          %% "akka-actor-tests"       % "2.3.2",
   "org.typelevel"              %% "macro-compat"           % "1.1.1",
   "org.scala-lang"             %  "scala-compiler"         % scalaVersion.value % "provided",
-  "org.scala-lang"             %  "scala-reflect"          % scalaVersion.value % "provided",
   "org.scalatest"              %% "scalatest"              % "2.2.1"            % "test",
   compilerPlugin("org.scalamacros" %% "paradise" % "2.1.0" cross CrossVersion.full)
 )
@@ -34,6 +40,3 @@ coverageHighlighting := true
 publishArtifact in Test := false
 
 parallelExecution in Test := false
-
-addCommandAlias("coverageEnable", "set coverageEnabled := true")
-addCommandAlias("coverageDisable", "set coverageEnabled := false")

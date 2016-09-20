@@ -1,1 +1,10 @@
-addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.3.5")
+val scoveragePluginVersion = "1.3.6-SNAPSHOT"
+
+resolvers ++= {
+  if (scoveragePluginVersion.endsWith("-SNAPSHOT"))
+    Seq(Resolver.sonatypeRepo("snapshots"))
+  else
+    Seq.empty
+}
+
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % scoveragePluginVersion)
